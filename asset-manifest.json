@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/fabiobc3/instagramClone/static/css/main.e897476f.chunk.css",
+    "main.js": "/fabiobc3/instagramClone/static/js/main.34ea8ab5.chunk.js",
+    "main.js.map": "/fabiobc3/instagramClone/static/js/main.34ea8ab5.chunk.js.map",
+    "runtime-main.js": "/fabiobc3/instagramClone/static/js/runtime-main.fadb1a89.js",
+    "runtime-main.js.map": "/fabiobc3/instagramClone/static/js/runtime-main.fadb1a89.js.map",
+    "static/js/2.5a1daa28.chunk.js": "/fabiobc3/instagramClone/static/js/2.5a1daa28.chunk.js",
+    "static/js/2.5a1daa28.chunk.js.map": "/fabiobc3/instagramClone/static/js/2.5a1daa28.chunk.js.map",
+    "static/js/3.1b4b1a08.chunk.js": "/fabiobc3/instagramClone/static/js/3.1b4b1a08.chunk.js",
+    "static/js/3.1b4b1a08.chunk.js.map": "/fabiobc3/instagramClone/static/js/3.1b4b1a08.chunk.js.map",
+    "index.html": "/fabiobc3/instagramClone/index.html",
+    "static/css/main.e897476f.chunk.css.map": "/fabiobc3/instagramClone/static/css/main.e897476f.chunk.css.map",
+    "static/js/2.5a1daa28.chunk.js.LICENSE.txt": "/fabiobc3/instagramClone/static/js/2.5a1daa28.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fadb1a89.js",
+    "static/js/2.5a1daa28.chunk.js",
+    "static/css/main.e897476f.chunk.css",
+    "static/js/main.34ea8ab5.chunk.js"
+  ]
+}
