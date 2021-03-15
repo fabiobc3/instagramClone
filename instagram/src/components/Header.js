@@ -4,15 +4,15 @@ import css from 'Header.module.css';
 function Header() {
     return (
         <div className={css.header}>
-            <div className={css.navItem}>
+            <div>
                 <button>
                     <img src={publicUrl('/assets/camera.svg')} alt="Camera"/>
                 </button>
             </div>
-            <div className={css.navItem}>
+            <div>
                 <img src={publicUrl('/assets/logo.png')} alt="Logo"/>
             </div>
-            <div className={css.navItem}>
+            <div>
                 <button>
                     <img src={publicUrl('/assets/message.svg')} alt="Arrow"/>
                 </button>
