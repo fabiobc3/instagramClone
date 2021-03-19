@@ -12,6 +12,8 @@ function Thumbnail(props){
     const name = props.name;
     const bio = props.bio;
     const posts = props.posts;
+    const followers = props.followers;
+    const following = props.following;
     return(
         <div>
             <div class={css.line}>
@@ -23,6 +25,13 @@ function Thumbnail(props){
                     <b class={css.container}>{name}</b>
                     <p class={css.container}>{bio}</p>
                 </div>
+            </div>
+            <div>
+                <p class={css.userStats}>
+                    <p><b>{posts.length}</b><br></br>Posts</p>
+                    <p><b>{followers.length}</b> <br></br>Followers</p>
+                    <p><b>{following.length}</b> <br></br>Following</p>
+                </p>
             </div>
             <div class={css.posts}>
                 {renderPostThumbnails(posts)}
