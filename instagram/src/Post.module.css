@@ -1,6 +1,6 @@
 .profilePic{
     border-radius: 100%;
-    width: 4%;
+    width: 30px;
     object-fit: cover;
 }
 
@@ -19,4 +19,14 @@
 
 .containerItem{
     margin-right: 10px;
+}
+
+.comments{
+    margin: 10px;
+    width: fit-content;
+}
+
+.heart{
+    height: 25px;
+    object-fit: cover;
 }

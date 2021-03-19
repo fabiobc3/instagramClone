@@ -7,13 +7,15 @@ import Activity from './Activity';
 import Navbar from './Navbar';
 import css from 'App.module.css';
 import React from 'react';
+import initialStore from 'utils/initialStore';
 
 
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      page : "home"
+      page : "home",
+      store: initialStore 
     }
     this.setPage = this.setPage.bind(this);
   }
@@ -22,11 +24,11 @@ class App extends React.Component {
   }
   renderMain(page){
     switch(page){
-      case "home" : return <Home/>;
+      case "home" : return <Home store={this.state.store} />;
       case "explore" : return <Explore/>;
       case "newPost" : return <NewPost/>;
       case "activity" : return <Activity/>;
-      case "profile" : return <Profile/>;
+      case "profile" : return <Profile  store={this.state.store}/>;
       default: return <Home/>;
     }
   }

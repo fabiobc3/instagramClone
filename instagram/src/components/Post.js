@@ -1,12 +1,49 @@
 import publicUrl from 'utils/publicUrl';
 import css from 'Post.module.css';
 import TimeSpan from 'utils/timespan';
+import {useState} from 'react';
+
+function renderComments(comments){
+    return comments.map(comment => renderComment(comment))
+}
+
+function renderComment(comment){
+    return (
+        <div>
+            <b>{comment.userId}</b> {comment.text}  
+        </div>
+    )
+}
+
+function renderHeart(isLiked){
+    if (isLiked === false){
+        return publicUrl('/assets/like.svg')
+    }
+    return publicUrl('/assets/redHeart.png')
+}
 
 function Post(props) {
-    
-    let like = 'likes';
-    if (props.likes.count == 1){
-        like = 'like'
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setCount] = useState(props.likes.count); 
+
+    const onClickLikeButton = () => {
+        setIsLiked(!isLiked); 
+        if (isLiked){
+            setCount(likeCount - 1);
+            props.store.likes = props.store.likes.filter(like =>
+                like.userId !== props.user.id || like.postId !== props.post.id
+            )
+            console.log(props.store); 
+        }else{
+            setCount(likeCount + 1);
+            props.store.likes = props.store.likes.concat({
+                userId: props.user.id,
+                postId: props.post.id,
+                datetime: new Date().toISOString() 
+            });
+            console.log(props.store); 
+       }
     }
 
     let profilePic = props.user.photo;
@@ -25,8 +62,8 @@ function Post(props) {
         </div>
         <div class={css.container}>
             <div class={css.containerItem}>
-                <button>
-                    <img src={publicUrl('/assets/like.svg')} alt="Like"/>
+                <button onClick={onClickLikeButton}>
+                    <img class={css.heart} src={renderHeart(isLiked)} alt="Like"/>
                 </button>
             </div>
             <div class={css.containerItem}>
@@ -36,15 +73,10 @@ function Post(props) {
             </div>
         </div>
         <div>
-            <b>{props.likes.count} {like}</b>
+            <b>{likeCount} likes</b>
         </div>
-        <div>
-            <div>
-                <b>{props.comments[0].userId}</b> {props.comments[0].text}  
-            </div>
-            <div>
-                <b>{props.comments[1].userId}</b> {props.comments[1].text}  
-            </div>
+        <div class={css.comments}>
+            {renderComments(props.comments)}
         </div>
         <div>
             {time} ago
