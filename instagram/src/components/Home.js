@@ -20,7 +20,7 @@ function findLikes(post, store){
 
 function Home(props) {
 
-    const {store} = props;
+    const store = props.store;
 	return (
 	    <div>
             {store.posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime))
@@ -29,9 +29,13 @@ function Home(props) {
 	                key={post.id}
 	                user={findUser(post, store)}
 	                post={post}
+                    desc={post.desc}
 	                comments={findComments(post, store)}
 	                likes={findLikes(post, store)}
                     store = {store}
+                    onComment={props.onComment}
+                    onLike={props.onLike}
+                    onUnlike={props.onUnlike}
 	            />)}
         </div>
 	);

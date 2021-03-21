@@ -22,27 +22,31 @@ function renderHeart(isLiked){
     return publicUrl('/assets/redHeart.png')
 }
 
+
+
 function Post(props) {
 
+    function handleSubmitComment(event){
+        props.onComment(props.post.id, comment); // this calls addComment from App.js
+        setComment(''); //reset
+        setToggleComment(false); //close comment box
+        event.preventDefault(); // prevent page refresh
+      }
+
+    const [comment, setComment] = useState('');
+    const [toggleComment, setToggleComment] = useState(false);
+
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setCount] = useState(props.likes.count); 
+    const [likeCount, setCount] = useState(props.likes.count);
 
     const onClickLikeButton = () => {
         setIsLiked(!isLiked); 
         if (isLiked){
             setCount(likeCount - 1);
-            props.store.likes = props.store.likes.filter(like =>
-                like.userId !== props.user.id || like.postId !== props.post.id
-            )
-            console.log(props.store); 
+            props.onUnlike(props.post.id);
         }else{
             setCount(likeCount + 1);
-            props.store.likes = props.store.likes.concat({
-                userId: props.user.id,
-                postId: props.post.id,
-                datetime: new Date().toISOString() 
-            });
-            console.log(props.store); 
+            props.onLike(props.post.id);
        }
     }
 
@@ -60,6 +64,9 @@ function Post(props) {
         <div>
             <img class={css.postPic} src={publicUrl(postPic)} alt="Profile Pic"/>
         </div>
+        <div>
+            <p>{props.desc}</p>
+        </div>
         <div class={css.container}>
             <div class={css.containerItem}>
                 <button onClick={onClickLikeButton}>
@@ -67,8 +74,8 @@ function Post(props) {
                 </button>
             </div>
             <div class={css.containerItem}>
-                <button>
-                    <img src={publicUrl('/assets/comment.svg')} alt="Comment"/>
+                <button onClick={e=>setToggleComment(!toggleComment)}>
+                    <img src={publicUrl('/assets/comment.svg')} alt='Comment Action'/> 
                 </button>
             </div>
         </div>
@@ -81,7 +88,12 @@ function Post(props) {
         <div>
             {time} ago
         </div>
-       
+        {toggleComment && 
+            <form className={css.addComment} onSubmit={handleSubmitComment}>
+                <input type="text" placeholder="Add a comment…" value={comment} onChange={e=>setComment(e.target.value)}/>
+                <button type="submit">Post</button>
+            </form>
+        }
       </div>
     );
   }

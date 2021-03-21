@@ -4,9 +4,7 @@ import publicUrl from 'utils/publicUrl';
 
 function Navbar(props) {
     function handleNavChange(page){
-        if (props.onNavChange){
-            props.onNavChange(page);
-        }
+        props.onNavChange(page);
     }
     return (
         <nav className={css.navbar}>
