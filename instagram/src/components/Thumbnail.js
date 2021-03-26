@@ -1,12 +1,16 @@
 import publicUrl from 'utils/publicUrl';
 import PostThumbnail from './PostThumbnail.js';
 import css from 'Thumbnail.module.css';
+import {useState} from 'react';
 
 function renderPostThumbnails(posts){
     return posts.map(post => PostThumbnail(post))
 }
 
+
+
 function Thumbnail(props){
+    const store = props.store;
     const userName = props.userName;
     const profilePic = props.profilePic;
     const name = props.name;
@@ -14,12 +18,27 @@ function Thumbnail(props){
     const posts = props.posts;
     const followers = props.followers;
     const following = props.following;
+    const [isFollowing, setFollowing] = useState(followers.filter(follower => follower.followerId === store.currentUserId).length !== 0);
+
+function handleFollow(isFollowing){
+    setFollowing(isFollowing);
+    if(isFollowing === false){
+        props.onUnfollow(userName, store.currentUserId);
+    }
+    else{
+        props.onFollow(userName, store.currentUserId);
+    }
+}
+    
     return(
         <div>
             <div class={css.line}>
                 <div class={css.container}>
                     <img class={css.profilePic} src={publicUrl(profilePic)} alt="Profile Pic"/>
-                    <b class={css.userName}>{userName}</b>
+                    <b class={css.userName}> {userName} </b>
+                    <button class={css.followBtn} onClick={() => handleFollow(!isFollowing)}>
+                        {isFollowing ? "Unfollow" : "Follow"}
+                    </button>
                 </div>
                 <div>
                     <b class={css.container}>{name}</b>

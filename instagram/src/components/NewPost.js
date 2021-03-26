@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import css from 'NewPost.module.css';
 import FileLoader from './FileLoader.js';
+import {
+    Link,
+    useHistory
+} from "react-router-dom";
+
 
 function NewPost(props) {
   
-  const [dragging, setDragging] = useState(false); // to show a dragging effect
+  const history = useHistory();
+  const [dragging, setDragging] = useState(false);
   const [desc, setDesc] = useState('');
   const [photo, setPhoto] = useState(null);
-  const [error, setError] = useState(''); // to show an error message
+  const [error, setError] = useState('');
 
   function handleFileDragEnter(e){
     setDragging(true);
@@ -27,7 +33,6 @@ function NewPost(props) {
       if (file.type.match(/image.*/)){
 				let reader = new FileReader();			
 				reader.onloadend = (e) => {
-					// TODO: call setPhoto with e.target.result (this is a Base64 image string)
                     setPhoto(e.target.result);
 				};
 				reader.readAsDataURL(file);
@@ -37,19 +42,9 @@ function NewPost(props) {
   }
   
   function handleSubmit(e){
-		// TODO:
-		// 1. Prevent default behavior
-		// 2. Show error msg if failed and exit
-		// 3. Call the storage update function passed from the parent
-		// 3. Clear error msg
-        props.onPost(photo,desc);
-        e.preventDefault();
-
-
-  }
-  function handleCancel(){
-    // TODO: Notify the parent about the cancellation
-    props.onCancel();
+    props.onPost(photo,desc);
+    e.preventDefault();
+    history.push('/');
   }
 
   return (
@@ -68,17 +63,18 @@ function NewPost(props) {
 	          </FileLoader>
         </div>
         <div className={css.desc} >
-        	{/* TODO: add textarea */}
             <form>
                 <input type="text" placeholder="Add a description…" value={desc} onChange={e=>setDesc(e.target.value)}/>
             </form>
         </div>
         <div className={css.error}>
-					{/* TODO: show error message */}
+	
         </div>
         <div className={css.actions}>
-          <button onClick={handleCancel}>Cancel</button>
-          <button onClick={handleSubmit}>Share</button>          
+            <Link to="/">
+                <button>Cancel</button>
+            </Link>
+            <button onClick={handleSubmit}>Share</button>   
         </div>
     </div>
   );

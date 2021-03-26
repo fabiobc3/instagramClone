@@ -2,6 +2,9 @@ import publicUrl from 'utils/publicUrl';
 import css from 'Post.module.css';
 import TimeSpan from 'utils/timespan';
 import {useState} from 'react';
+import {
+    Link
+  } from "react-router-dom";
 
 function renderComments(comments){
     return comments.map(comment => renderComment(comment))
@@ -27,10 +30,10 @@ function renderHeart(isLiked){
 function Post(props) {
 
     function handleSubmitComment(event){
-        props.onComment(props.post.id, comment); // this calls addComment from App.js
-        setComment(''); //reset
-        setToggleComment(false); //close comment box
-        event.preventDefault(); // prevent page refresh
+        props.onComment(props.post.id, comment);
+        setComment('');
+        setToggleComment(false);
+        event.preventDefault();
       }
 
     const [comment, setComment] = useState('');
@@ -52,15 +55,17 @@ function Post(props) {
 
     let profilePic = props.user.photo;
     let postPic = props.post.photo;
-
+    let userPage = '/profile/'.concat(props.user.id);
     let time = TimeSpan(props.post.datetime);
 
     return (
       <div>
-        <div>
-            <img class={css.profilePic} src={publicUrl(profilePic)} alt="Profile Pic"/>
-            <b class={css.profileName}>{props.user.id}</b>
-        </div>
+        <Link to={userPage}  class={css.linkToProfile}>
+            <div>
+                <img class={css.profilePic} src={publicUrl(profilePic)} alt="Profile Pic"/>
+                <b class={css.profileName}>{props.user.id}</b>
+            </div>
+        </Link> 
         <div>
             <img class={css.postPic} src={publicUrl(postPic)} alt="Profile Pic"/>
         </div>

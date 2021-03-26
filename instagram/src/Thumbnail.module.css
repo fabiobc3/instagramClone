@@ -48,3 +48,12 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 5px;
 }
+
+.followBtn{
+    display: flex;
+    margin-left: 30px;
+    margin-top: 0px;
+    font-size: xx-large;
+    font-weight: 600;
+    color: blue;
+}

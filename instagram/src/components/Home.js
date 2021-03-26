@@ -1,6 +1,6 @@
 import React from 'react';
 import Post from './Post';
-
+import { useParams } from 'react-router-dom';
 
 function findUser(post, store){
     return store.users.find(user=>user.id===post.userId);
@@ -19,12 +19,12 @@ function findLikes(post, store){
 }
 
 function Home(props) {
-
+    let {postId} = useParams();
     const store = props.store;
+    const render = (postId === undefined ? store.posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime)) :  store.posts.filter(post => post.id === postId)); 
 	return (
 	    <div>
-            {store.posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime))
-            .map(post=>
+            {render.map(post=>
 				<Post
 	                key={post.id}
 	                user={findUser(post, store)}

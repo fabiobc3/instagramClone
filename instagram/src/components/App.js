@@ -9,10 +9,15 @@ import css from 'App.module.css';
 import React, {useState} from 'react';
 import initialStore from 'utils/initialStore';
 import uniqueId from 'utils/uniqueId';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
-  
-  const [page, setPage] = useState('home');
+
   const [store, setStore] = useState(initialStore);
 
   function addComment(postId, text){
@@ -48,10 +53,6 @@ function App() {
   }
 
   function addPost(photo, desc){
-		// TODO:
-		// 1. Create a new post object (use uniqueId('post') to create an id)
-		// 2. Update the store 
-		// 3. Call setPage to come back to the home page
     const post = {
       id: uniqueId('post'),
       userId: store.currentUserId,
@@ -61,43 +62,59 @@ function App() {
     }
     setStore({
       ...store,
-        posts:store.posts.concat(post)
+        posts: store.posts.concat(post)
     });
-    setPage('home');
   }
 
-	function cancelPost(){
-		// TODO:
-		// 1. Call setPage to come back to the home page (we will use Router to improve this)
-    setPage('home');
-	}
-	// TODO: Pass "store", "addPost", "cancelPost" to <NewPost/>	
-
-  function renderMain(page){
-    switch(page){
-      case "home" : return <Home store={store} onComment={addComment} onLike={addLike} onUnlike={removeLike}/>;
-      case "explore" : return <Explore/>;
-      case "newPost" : return <NewPost store={store} onPost={addPost} onCancel={cancelPost}/>;
-      case "activity" : return <Activity/>;
-      case "profile" : return <Profile  store={store}/>;
-      default: return <Home/>;
+  function addFollower(userId, followerId){
+    const newFollow = {           
+      userId: userId,
+      followerId: followerId 
     }
+    console.log(newFollow);
+    setStore({
+      ...store,
+        followers: store.followers.concat(newFollow)
+    });
   }
-  
+
+  function removeFollower(userId, followerId){
+    setStore({
+      ...store,
+        followers: store.followers.filter(follower => follower.followerId !== followerId || follower.userId !== userId)
+    });
+  }
+
+ 
   return(
-    <div className={css.container}>
-      <Header/>
-      <main className={css.content}>
-        {renderMain(page)}
-      </main>
-      <div className={css.content}>
-        <Navbar onNavChange={setPage}/>
+    <Router basename={process.env.PUBLIC_URL}>
+      <div className={css.container}>
+        <Header/>
+        <main className={css.content}>
+          <Switch>
+            <Route path="/profile/:userId?">
+              <Profile store={store} onFollow={addFollower} onUnfollow={removeFollower}/>
+            </Route>
+            <Route path="/activity">
+              <Activity/>
+            </Route>
+            <Route path="/newPost">
+              <NewPost store={store} onPost={addPost}/>
+            </Route>
+            <Route path="/explore">
+              <Explore/>
+            </Route>
+            <Route path="/:postId?">
+              <Home store={store} onComment={addComment} onLike={addLike} onUnlike={removeLike}/>
+            </Route>
+          </Switch>
+        </main>
+        <div className={css.content}>
+          <Navbar/>
+        </div>
       </div>
-    </div>
+    </Router>
   );
-
-
-
 }
 
 export default App;
