@@ -1,12 +1,18 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useState, useEffect} from 'react';
 import uniqueId from 'utils/uniqueId.js';
 import initialStore from 'utils/initialStore.js';
 
 export const StoreContext = createContext(); 
 
 function StoreContextProvider(props){
-    
-    const [store, setStore] = useState(initialStore);
+
+    const [store, setStore] = useState(()=>{
+        return JSON.parse(window.localStorage.getItem('store')) || initialStore;
+    });
+
+    useEffect(()=>{
+        window.localStorage.setItem('store', JSON.stringify(store));
+    }, [store]);
 
     function addComment(postId, text){
         const comment = {
