@@ -1,43 +1,49 @@
-import React from 'react';
 import Post from './Post';
 import { useParams } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { StoreContext } from 'contexts/StoreContext';
 
-function findUser(post, store){
-    return store.users.find(user=>user.id===post.userId);
+
+function findUser(post, users){
+    return users.find(user=>user.id===post.userId);
   }
 
-function findComments(post, store){
-  return store.comments.filter(comment=>comment.postId===post.id);
+function findComments(post, comments){
+  return comments.filter(comment=>comment.postId===post.id);
 }
 
-function findLikes(post, store){
-  let postLikes = store.likes.filter(like=>like.postId===post.id);
+function findLikes(post, likes, currentUserId){
+  let postLikes = likes.filter(like=>like.postId===post.id);
   return {
-    self: postLikes.some(like=> like.userId===store.currentUserId),
+    self: postLikes.some(like=> like.userId===currentUserId),
     count: postLikes.length
   }
 }
 
 function Home(props) {
-    let {postId} = useParams();
-    const store = props.store;
-    const render = (postId === undefined ? store.posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime)) :  store.posts.filter(post => post.id === postId)); 
+  let {
+    posts, users, comments, likes, currentUserId, 
+    addComment, addLike, removeLike
+  } = useContext(StoreContext);
+  let {postId} = useParams();
+  //const store = props.store;
+  const render = (postId === undefined ? posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime)) :  posts.filter(post => post.id === postId)); 
 	return (
 	    <div>
-            {render.map(post=>
-				<Post
-	                key={post.id}
-	                user={findUser(post, store)}
-	                post={post}
-                    desc={post.desc}
-	                comments={findComments(post, store)}
-	                likes={findLikes(post, store)}
-                    store = {store}
-                    onComment={props.onComment}
-                    onLike={props.onLike}
-                    onUnlike={props.onUnlike}
-	            />)}
-        </div>
+        {render.map(post=>
+				  <Post
+            key={post.id}
+            user={findUser(post, users)}
+            post={post}
+            desc={post.desc}
+            comments={findComments(post, comments)}
+            likes={findLikes(post, likes, currentUserId)}
+            //store = {store}
+            onComment={addComment}
+            onLike={addLike}
+            onUnlike={removeLike}
+          />)}
+      </div>
 	);
 }
 

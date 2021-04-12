@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState} from 'react';
+import { StoreContext } from 'contexts/StoreContext';
 import css from 'NewPost.module.css';
 import FileLoader from './FileLoader.js';
 import {
@@ -7,7 +8,11 @@ import {
 } from "react-router-dom";
 
 
-function NewPost(props) {
+function NewPost() {
+
+  let {
+    addPost
+  } = useContext(StoreContext);
   
   const history = useHistory();
   const [dragging, setDragging] = useState(false);
@@ -42,7 +47,7 @@ function NewPost(props) {
   }
   
   function handleSubmit(e){
-    props.onPost(photo,desc);
+    addPost(photo,desc);
     e.preventDefault();
     history.push('/');
   }

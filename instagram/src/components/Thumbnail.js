@@ -10,7 +10,8 @@ function renderPostThumbnails(posts){
 
 
 function Thumbnail(props){
-    const store = props.store;
+    const currentUserId = props.currentUserId;
+    //const store = props.store;
     const userName = props.userName;
     const profilePic = props.profilePic;
     const name = props.name;
@@ -18,15 +19,15 @@ function Thumbnail(props){
     const posts = props.posts;
     const followers = props.followers;
     const following = props.following;
-    const [isFollowing, setFollowing] = useState(followers.filter(follower => follower.followerId === store.currentUserId).length !== 0);
+    const [isFollowing, setFollowing] = useState(followers.filter(follower => follower.followerId === currentUserId).length !== 0);
 
 function handleFollow(isFollowing){
     setFollowing(isFollowing);
     if(isFollowing === false){
-        props.onUnfollow(userName, store.currentUserId);
+        props.onUnfollow(userName, currentUserId);
     }
     else{
-        props.onFollow(userName, store.currentUserId);
+        props.onFollow(userName, currentUserId);
     }
 }
     
